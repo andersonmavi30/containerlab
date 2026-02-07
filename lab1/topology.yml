@@ -1,0 +1,40 @@
+name: lab1
+
+mgmt:
+  network: clab
+  ipv4-subnet: 172.20.20.0/24
+
+topology:
+  nodes:
+    srl1:
+      kind: srl
+      image: ghcr.io/nokia/srlinux:latest
+
+    sonic1:
+      kind: sonic-vs
+      image: netreplica/docker-sonic-vs:latest
+
+    host1:
+      kind: linux
+      image: alpine:latest
+      exec:
+      - ip addr add 10.10.10.10/24 dev eth1
+      - ip link set eth1 up
+      - ip route add default via 10.10.10.1
+
+    host2:
+      kind: linux
+      image: alpine:latest
+      exec:
+      - ip addr add 10.10.10.20/24 dev eth1
+      - ip link set eth1 up
+      - ip route add default via 10.10.10.2
+
+  links:
+  # LACP links (2x) between switches
+  - endpoints: [ "srl1:e1-1", "sonic1:eth1" ]
+  - endpoints: [ "srl1:e1-2", "sonic1:eth2" ]
+
+  # Hosts
+  - endpoints: [ "srl1:e1-10", "host1:eth1" ]
+  - endpoints: [ "sonic1:eth10", "host2:eth1" ]

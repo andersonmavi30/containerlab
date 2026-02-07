@@ -1,0 +1,3 @@
+# Containerlab runtime artifacts (no versionar)
+clab-*/
+*.annotations.json
