@@ -10,9 +10,9 @@ topology:
       kind: srl
       image: ghcr.io/nokia/srlinux:latest
 
-    sonic1:
-      kind: sonic-vs
-      image: netreplica/docker-sonic-vs:latest
+    srl2:
+      kind: srl
+      image: ghcr.io/nokia/srlinux:latest
 
     host1:
       kind: linux
@@ -32,9 +32,9 @@ topology:
 
   links:
   # LACP links (2x) between switches
-  - endpoints: [ "srl1:e1-1", "sonic1:eth1" ]
-  - endpoints: [ "srl1:e1-2", "sonic1:eth2" ]
+  - endpoints: [ "srl1:e1-1", "srl2:e1-1" ]
+  - endpoints: [ "srl1:e1-2", "srl2:e1-2" ]
 
   # Hosts
   - endpoints: [ "srl1:e1-10", "host1:eth1" ]
-  - endpoints: [ "sonic1:eth10", "host2:eth1" ]
+  - endpoints: [ "srl2:e1-10", "host2:eth1" ]
