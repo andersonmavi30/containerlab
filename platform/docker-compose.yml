@@ -1,0 +1,30 @@
+services:
+  runner:
+    image: alpine:3.20
+    container_name: netdevops-runner
+    command: ["sh", "-lc", "sleep infinity"]
+    volumes:
+      - netdevops-repo:/workspace
+    networks:
+      - netdevops-ext
+      - clab
+
+  ansible:
+    image: ubuntu:24.04
+    container_name: netdevops-ansible
+    command: ["bash", "-lc", "sleep infinity"]
+    volumes:
+      - netdevops-repo:/workspace
+    networks:
+      - netdevops-ext
+      - clab
+
+volumes:
+  netdevops-repo:
+    external: true
+
+networks:
+  netdevops-ext:
+    external: true
+  clab:
+    external: true
